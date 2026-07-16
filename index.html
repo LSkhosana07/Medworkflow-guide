@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0b3158">
+    <meta name="description" content="Medworkflow training guide for scheduling and managing patient episodes.">
+    <title>Medworkflow | Patient Episode Scheduling Guide</title>
+    <style>
+      :root {
+        --navy-950: #071d33;
+        --navy-900: #0b3158;
+        --navy-800: #12446f;
+        --blue-600: #1976a3;
+        --teal-500: #20a39e;
+        --teal-100: #dff5f2;
+        --ink-900: #172536;
+        --ink-600: #526477;
+        --line: #dce5ec;
+        --surface: #ffffff;
+        --canvas: #f3f7fa;
+        --shadow: 0 18px 48px rgba(7, 29, 51, .10);
+      }
+
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        color: var(--ink-900);
+        background:
+          radial-gradient(circle at 90% 2%, rgba(32, 163, 158, .11), transparent 24rem),
+          var(--canvas);
+        font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+        font-size: 16px;
+        line-height: 1.65;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      body > .guide-shell {
+        width: min(1120px, calc(100% - 40px));
+        margin: 40px auto 72px;
+        overflow: hidden;
+        background: var(--surface);
+        border: 1px solid rgba(11, 49, 88, .08);
+        border-radius: 24px;
+        box-shadow: var(--shadow);
+      }
+
+      .guide-hero {
+        position: relative;
+        overflow: hidden;
+        padding: 64px 72px 56px;
+        color: #fff;
+        background: linear-gradient(125deg, var(--navy-950), var(--navy-900) 62%, #0e5b77);
+      }
+      .guide-hero::after {
+        content: "";
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        right: -80px;
+        top: -130px;
+        border: 52px solid rgba(255,255,255,.06);
+        border-radius: 50%;
+      }
+      .brand-lockup { display: flex; align-items: center; gap: 13px; margin-bottom: 44px; }
+      .brand-mark {
+        display: grid;
+        place-items: center;
+        width: 42px;
+        height: 42px;
+        border: 1px solid rgba(255,255,255,.32);
+        border-radius: 11px;
+        background: rgba(255,255,255,.1);
+        font-weight: 800;
+        letter-spacing: -.03em;
+      }
+      .brand-name { font-size: 18px; font-weight: 720; letter-spacing: .01em; }
+      .eyebrow {
+        margin: 0 0 14px;
+        color: #8de0d8;
+        font-size: 12px;
+        font-weight: 750;
+        letter-spacing: .16em;
+        text-transform: uppercase;
+      }
+      .guide-hero h1 {
+        max-width: 780px;
+        margin: 0;
+        color: #fff;
+        font-size: clamp(36px, 5vw, 58px);
+        line-height: 1.08;
+        letter-spacing: -.04em;
+      }
+      .hero-summary { max-width: 690px; margin: 22px 0 0; color: #d8e6f0; font-size: 18px; }
+      .hero-meta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 34px; }
+      .hero-meta span {
+        padding: 8px 13px;
+        border: 1px solid rgba(255,255,255,.2);
+        border-radius: 999px;
+        color: #eef7fb;
+        background: rgba(255,255,255,.08);
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .guide-toolbar { position: absolute; z-index: 2; top: 64px; right: 72px; }
+      .pdf-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        min-height: 42px;
+        padding: 0 18px;
+        border: 1px solid rgba(255,255,255,.5);
+        border-radius: 10px;
+        color: var(--navy-950);
+        background: #fff;
+        box-shadow: 0 8px 22px rgba(0,0,0,.2);
+        font: inherit;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: transform .18s ease, background .18s ease, box-shadow .18s ease;
+      }
+      .pdf-button:hover { transform: translateY(-1px); color: #fff; background: var(--teal-500); }
+      .pdf-button:focus-visible { outline: 3px solid rgba(32,163,158,.35); outline-offset: 3px; }
+      .pdf-button svg { width: 17px; height: 17px; fill: currentColor; }
+
+      .guide-content { padding: 56px 72px 68px; }
+      .video-label { margin: 0 0 12px; color: var(--navy-900); font-size: 13px; font-weight: 750; letter-spacing: .1em; text-transform: uppercase; }
+      .video-frame { position: relative; padding-bottom: 56.25%; overflow: hidden; border: 1px solid #cddae4; border-radius: 16px; background: var(--navy-950); box-shadow: 0 12px 30px rgba(7,29,51,.14); }
+      .video-frame iframe { border-radius: 16px !important; }
+      .guide-intro {
+        margin: 28px 0 12px !important;
+        padding: 20px 22px;
+        border-left: 4px solid var(--teal-500);
+        border-radius: 0 12px 12px 0;
+        color: #33485d;
+        background: #f3faf9;
+        font-size: 17px;
+      }
+      .launch-link { margin: 26px 0 56px !important; padding: 16px 18px; border: 1px solid var(--line); border-radius: 12px; background: #f8fafc; font-size: 15px !important; }
+      .launch-link a { color: var(--blue-600); font-weight: 700; text-underline-offset: 3px; }
+
+      .steps { counter-reset: guide-step; }
+      .step-card {
+        counter-increment: guide-step;
+        margin: 0 0 54px;
+        padding: 26px;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: var(--surface);
+        box-shadow: 0 8px 24px rgba(11,49,88,.055);
+        break-inside: avoid;
+      }
+      .step-card h3 {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin: 0 0 14px !important;
+        color: var(--navy-900);
+        font-size: 20px !important;
+        line-height: 1.35;
+      }
+      .step-card h3::before {
+        content: counter(guide-step, decimal-leading-zero);
+        flex: 0 0 auto;
+        display: grid;
+        place-items: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 11px;
+        color: #fff;
+        background: linear-gradient(145deg, var(--navy-800), var(--blue-600));
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: .04em;
+      }
+      .step-card > div { margin: 0 0 20px !important; color: var(--ink-600); }
+      .step-card img {
+        display: block;
+        width: 100%;
+        height: auto;
+        border: 1px solid #cfdbe4;
+        border-radius: 12px;
+        background: #edf2f6;
+        box-shadow: 0 10px 26px rgba(7,29,51,.10);
+      }
+      .guide-complete { margin-top: 10px; padding: 26px; border-radius: 16px; color: #174c49; background: var(--teal-100); font-weight: 560; }
+      .guide-footer { display: flex; justify-content: space-between; gap: 24px; padding: 24px 72px; border-top: 1px solid var(--line); color: #647587; background: #f8fafc; font-size: 13px; }
+      .guide-footer strong { color: var(--navy-900); }
+
+      @media (max-width: 720px) {
+        body > .guide-shell { width: 100%; margin: 0; border: 0; border-radius: 0; }
+        .guide-hero, .guide-content { padding: 40px 22px; }
+        .guide-hero h1 { font-size: 37px; }
+        .brand-lockup { margin-bottom: 34px; }
+        .guide-toolbar { position: relative; top: auto; right: auto; margin-top: 28px; }
+        .pdf-button { width: 100%; }
+        .step-card { margin-bottom: 30px; padding: 18px; border-radius: 14px; }
+        .step-card h3 { align-items: flex-start; font-size: 18px !important; }
+        .guide-footer { flex-direction: column; padding: 22px; }
+      }
+
+      @media print {
+        @page { size: A4; margin: 14mm; }
+        body { background: #fff; font-size: 10pt; }
+        body > .guide-shell { width: 100%; margin: 0; border: 0; border-radius: 0; box-shadow: none; }
+        .guide-hero { padding: 22mm 14mm; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+        .guide-content { padding: 12mm 0; }
+        .guide-toolbar, .video-frame { display: none !important; }
+        .video-label::after { content: " — available in the digital version"; font-weight: 500; text-transform: none; letter-spacing: 0; }
+        .step-card { margin-bottom: 9mm; padding: 5mm; box-shadow: none; }
+        .step-card h3::before { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+        .guide-footer { padding: 6mm 0; }
+      }
+    </style>
+</head>
+<body>
+      <div class="guide-shell">
+        <header class="guide-hero">
+          <div class="brand-lockup"><span class="brand-mark">MW</span><span class="brand-name">Medworkflow</span></div>
+          <p class="eyebrow">Operational Training Guide</p>
+          <h1>Schedule and Manage Patient Episodes</h1>
+          <p class="hero-summary">A structured, step-by-step guide for capturing patient information, assigning clinical details and completing a patient episode accurately.</p>
+          <div class="hero-meta"><span>51 guided steps</span><span>Patient administration</span><span>Digital walkthrough included</span></div>
+          <div class="guide-toolbar" aria-label="Document actions">
+            <button class="pdf-button" type="button" onclick="exportGuideToPdf()">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16.5 6.5 11l1.4-1.4 3.1 3.1V3h2v9.7l3.1-3.1 1.4 1.4-5.5 5.5ZM5 21a2 2 0 0 1-2-2v-4h2v4h14v-4h2v4a2 2 0 0 1-2 2H5Z"/></svg>
+              Export to PDF
+            </button>
+          </div>
+        </header>
+        <main class="guide-content">
+          <p class="video-label">Interactive walkthrough</p>
+          
+     <div class="video-frame">
+     <iframe style="width:100%;height:100%;position:absolute;left:0px;top:0px;border-radius: 10px" src="https://embed.app.guidde.com/playbooks/gbyfgcBCEUNhKNsJCvAyqc?" title="Schedule and Manage Patient Episodes in Medworkflow" frameborder="0" referrerpolicy="unsafe-url" allowfullscreen="true" allow="clipboard-write" sandbox="allow-popups allow-popups-to-escape-sandbox allow-scripts allow-forms allow-same-origin allow-presentation"></iframe>
+     </div>
+          
+          <div class="guide-intro" style="margin-top:16px; margin-bottom:16px" >
+            This tutorial guides you through scheduling a new patient episode in Medworkflow.
+            
+        </div> <h3 class="launch-link" style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">
+                      Go to <a href="https://medworkflow.co.za" target="_blank">medworkflow.co.za</a>
+                  </h3> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">1. Introduction</h3> <div style="margin-top:16px; margin-bottom:16px" >
+             You will learn how to enter patient details, select medical options, and finalize the case efficiently.
+            
+        </div> <img width="100%" src="https://static.guidde.com/v0/qg%2FrBdMQcTfmFQqinMWwsPyWcEK7rJ2%2FgbyfgcBCEUNhKNsJCvAyqc%2FuZ5MPEnX7kMHBxRpXV51hr_doc.png?alt=media&amp;token=1ed5361d-6bf1-4837-94b0-ac0247084295" alt="Introduction" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">2. Initiate New Episode Scheduling</h3> <div style="margin-top:16px; margin-bottom:16px" >
+            Click "Schedule new Episode" to start creating a new patient episode in Medworkflow.
+            
+        </div> <img width="100%" src="https://static.guidde.com/v0/qg%2FrBdMQcTfmFQqinMWwsPyWcEK7rJ2%2FgbyfgcBCEUNhKNsJCvAyqc%2FtTetx2ZXYVtiy76u5XitUU_doc.png?alt=media&amp;token=9a99aa43-2d3e-4cf5-826c-5d58dccf75d7" alt="Initiate New Episode Scheduling" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">3. Access Patient ID Entry</h3> <div style="margin-top:16px; margin-bottom:16px" >
+            Click "Enter patient ID number" to input the patient's identification details.
+            
+        </div> <img width="100%" src="https://static.guidde.com/v0/qg%2FrBdMQcTfmFQqinMWwsPyWcEK7rJ2%2FgbyfgcBCEUNhKNsJCvAyqc%2FfRAyLPisUzzFhhLa7FvATF_doc.png?alt=media&amp;token=403ee5a8-715e-4aa8-b53f-6bc814a62ac7" alt="Access Patient ID Entry" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">4. Enter Patient ID Number</h3> <div style="margin-top:16px; margin-bottom:16px" >
+            Enter the patient's ID number in the field provided.
+            
+        </div> <img width="100%" src="https://static.guidde.com/v0/qg%2FrBdMQcTfmFQqinMWwsPyWcEK7rJ2%2FgbyfgcBCEUNhKNsJCvAyqc%2FecDtmyi32jjDaYHLyNjpu4_doc.png?alt=media&amp;token=81104986-dbc0-45d6-b555-a8fb438c2b9e" alt="Enter Patient ID Number" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">5. Proceed After ID Entry</h3> <div style="margin-top:16px; margin-bottom:16px" >
+            Click "Continue" to move to the next step after entering the patient ID.
+            
+        </div> <img width="100%" src="https://static.guidde.com/v0/qg%2FrBdMQcTfmFQqinMWwsPyWcEK7rJ2%2FgbyfgcBCEUNhKNsJCvAyqc%2Fhwged54jsc8UYAydpNh4KP_doc.png?alt=media&amp;token=3369110e-8d5e-45f8-9074-63adaa60e950" alt="Proceed After ID Entry" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">6. Open ID Type Selection</h3> <div style="margin-top:16px; margin-bottom:16px" >
+            Click "Select ID type" to choose the type of identification provided.
+            
+        </div> <img width="100%" src="https://static.guidde.com/v0/qg%2FrBdMQcTfmFQqinMWwsPyWcEK7rJ2%2FgbyfgcBCEUNhKNsJCvAyqc%2FgTFbN4aeS1522SZ3g973Mb_doc.png?alt=media&amp;token=7f2731be-21f3-44a3-a145-381ca50689fc" alt="Open ID Type Selection" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">7. Choose Passport Number Type</h3> <div style="margin-top:16px; margin-bottom:16px" >
+            Select the appropriate ID type for your patient: use a South African ID for South African citizens and a passport number for those from abroad.
+            
+        </div> <img width="100%" src="https://static.guidde.com/v0/qg%2FrBdMQcTfmFQqinMWwsPyWcEK7rJ2%2FgbyfgcBCEUNhKNsJCvAyqc%2FcaY8YXWvUCrensSRsaYhGw_doc.png?alt=media&amp;token=51429317-ab3a-41ed-93c9-ba75d8955c0d" alt="Choose Passport Number Type" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">8. Confirm ID Type Selection</h3> <div style="margin-top:16px; margin-bottom:16px" >
+            Click "Continue" to confirm the selected ID type and proceed.
+            
+        </div> <img width="100%" src="https://static.guidde.com/v0/qg%2FrBdMQcTfmFQqinMWwsPyWcEK7rJ2%2FgbyfgcBCEUNhKNsJCvAyqc%2Fg8cs2xpXvoKescbb57Xf58_doc.png?alt=media&amp;token=dcea83b2-2977-4860-8fcf-f89bef2d5be2" alt="Confirm ID Type Selection" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">9. fill in all the required fields under patient information </h3> <div style="margin-top:16px; margin-bottom:16px" >
+            Complete all required fields in the patient information section.
+            
+        </div> <img width="100%" src="https://static.guidde.com/v0/qg%2FrBdMQcTfmFQqinMWwsPyWcEK7rJ2%2FgbyfgcBCEUNhKNsJCvAyqc%2F7SbAoHkZByBCQQz8bkEmeb_doc.png?alt=media&amp;token=ecd98088-3cdf-4a11-9949-d790a09e58f0" alt="fill in all the required fields under patient information " /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">10. Select Medical or Surgical Category</h3> <div style="margin-top:16px; margin-bottom:16px" >
+            Click "Admission type" to specify the nature of the patient's case.
+            
+        </div> <img width="100%" src="https://static.guidde.com/v0/qg%2FrBdMQcTfmFQqinMWwsPyWcEK7rJ2%2FgbyfgcBCEUNhKNsJCvAyqc%2FtRKY5qRdNeAasLbPAj315R_doc.png?alt=media&amp;token=b748a8c7-ab16-4475-af2f-283269298483" alt="Select Medical or Surgical Category" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">11. Choose Surgical Category</h3> <img width="100%" src="https://static.guidde.com/v0/qg%2FrBdMQcTfmFQqinMWwsPyWcEK7rJ2%2FgbyfgcBCEUNhKNsJCvAyqc%2F7uQ1mxLa6QjTQHzxRmCTuc_doc.png?alt=media&amp;token=d5dfe684-70a7-4f99-b7ab-1193164d8b5c" alt="Choose Surgical Category" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">12. Select Private Option</h3> <div style="margin-top:16px; margin-bottom:16px" >
+            Click "Patient type" to indicate the patient's payment or medical aid status.
+            
+        </div> <img width="100%" src="https://static.guidde.com/v0/qg%2FrBdMQcTfmFQqinMWwsPyWcEK7rJ2%2FgbyfgcBCEUNhKNsJCvAyqc%2Ffn86xghEXQuiNR4GpVTjWV_doc.png?alt=media&amp;token=bca7dc58-eeac-4426-93eb-11f778066d01" alt="Select Private Option" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">13. Choose Medical Aid Option</h3> <img width="100%" src="https://static.guidde.com/v0/qg%2FrBdMQcTfmFQqinMWwsPyWcEK7rJ2%2FgbyfgcBCEUNhKNsJCvAyqc%2F6hWmMMcW936o584pFexJFb_doc.png?alt=media&amp;token=a5785946-f594-4694-b7af-dfa696c91432" alt="Choose Medical Aid Option" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">14. Access Authorization Number Field</h3> <div style="margin-top:16px; margin-bottom:16px" >
+            Click "Authorization Number" to enter the required authorization details.
+            
+        </div> <img width="100%" src="https://static.guidde.com/v0/qg%2FrBdMQcTfmFQqinMWwsPyWcEK7rJ2%2FgbyfgcBCEUNhKNsJCvAyqc%2Fdn8PY3sn4tNRB7J7i2hRLg_doc.png?alt=media&amp;token=f12288f5-6e37-459d-873d-497c534be5c5" alt="Access Authorization Number Field" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">15. Select Authorization Number Entry</h3> <div style="margin-top:16px; margin-bottom:16px" >
+            If you do not have the authorization number, you may proceed without it.
+            
+        </div> <img width="100%" src="https://static.guidde.com/v0/qg%2FrBdMQcTfmFQqinMWwsPyWcEK7rJ2%2FgbyfgcBCEUNhKNsJCvAyqc%2FeHcC5b1w5N6WfgpY4F3esL_doc.png?alt=media&amp;token=73ab27ab-be2e-450c-9bbb-407f8196f8a2" alt="Select Authorization Number Entry" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">16. Save and Continue Process</h3> <div style="margin-top:16px; margin-bottom:16px" >
+            Click "Save and Continue" to save entered information and proceed.
+            
+        </div> <img width="100%" src="https://static.guidde.com/v0/qg%2FrBdMQcTfmFQqinMWwsPyWcEK7rJ2%2FgbyfgcBCEUNhKNsJCvAyqc%2FpA4KgdJPVZqThnh4hTd6dP_doc.png?alt=media&amp;token=b6b75076-6b5b-4dd8-ba20-c7c9e499aba2" alt="Save and Continue Process" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">17. Access Doctor Selection</h3> <div style="margin-top:16px; margin-bottom:16px" >
+            Click here to open the doctor selection menu and choose your patient's admitting doctor.
+            
+        </div> <img width="100%" src="https://static.guidde.com/v0/qg%2FrBdMQcTfmFQqinMWwsPyWcEK7rJ2%2FgbyfgcBCEUNhKNsJCvAyqc%2FgNuTXkLy4iro84SSWBRNiU_doc.png?alt=media&amp;token=cb2d7b69-c091-4f2a-9be0-09544e681083" alt="Access Doctor Selection" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">18. Select Radiologist</h3> <img width="100%" src="https://static.guidde.com/v0/qg%2FrBdMQcTfmFQqinMWwsPyWcEK7rJ2%2FgbyfgcBCEUNhKNsJCvAyqc%2FmJ2nV2hBKBHGtuXEBRkThQ_doc.png?alt=media&amp;token=e4eb923d-7cd8-4dc9-9607-91484c16c40d" alt="Select Radiologist" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">19. Open Additional Doctor Options</h3> <div style="margin-top:16px; margin-bottom:16px" >
+            Click here to access options for adding or managing referring doctors.
+            
+        </div> <img width="100%" src="https://static.guidde.com/v0/qg%2FrBdMQcTfmFQqinMWwsPyWcEK7rJ2%2FgbyfgcBCEUNhKNsJCvAyqc%2FkymZJkHrTc8qFiMpDsoDci_doc.png?alt=media&amp;token=3195a7e2-3c68-4642-9b18-61bdcce15cb1" alt="Open Additional Doctor Options" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">20. Add New Doctor</h3> <div style="margin-top:16px; margin-bottom:16px" >
+            Click "Add New Doctor" to include a new doctor to the case.
+            
+        </div> <img width="100%" src="https://static.guidde.com/v0/qg%2FrBdMQcTfmFQqinMWwsPyWcEK7rJ2%2FgbyfgcBCEUNhKNsJCvAyqc%2F8PXuZjLDJ1m3NNfMkR2YFK_doc.png?alt=media&amp;token=47747c71-4bea-4226-ad73-6aa23aefdab8" alt="Add New Doctor" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">21. Cancel Doctor Addition</h3> <img width="100%" src="https://static.guidde.com/v0/qg%2FrBdMQcTfmFQqinMWwsPyWcEK7rJ2%2FgbyfgcBCEUNhKNsJCvAyqc%2F4azZycWNgZwdMXVx88H3Bd_doc.png?alt=media&amp;token=3b04dbad-4376-4775-ab46-22a983e9647b" alt="Cancel Doctor Addition" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">22. Save Doctor Selection</h3> <div style="margin-top:16px; margin-bottom:16px" >
+            Click "Save and Continue" to confirm doctor assignments and proceed.
+            
+        </div> <img width="100%" src="https://static.guidde.com/v0/qg%2FrBdMQcTfmFQqinMWwsPyWcEK7rJ2%2FgbyfgcBCEUNhKNsJCvAyqc%2F6R9Za9itZwuHqmn3B7pNgw_doc.png?alt=media&amp;token=ea389956-89ab-479c-ae3a-bb7352a6db1d" alt="Save Doctor Selection" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">23. Open Position Selection</h3> <div style="margin-top:16px; margin-bottom:16px" >
+            Click "Position" to designate the primary diagnosis position of ICD 10 Codes
+            
+        </div> <img width="100%" src="https://static.guidde.com/v0/qg%2FrBdMQcTfmFQqinMWwsPyWcEK7rJ2%2FgbyfgcBCEUNhKNsJCvAyqc%2FjoeeoE2XcpuuBLS5AMxbDk_doc.png?alt=media&amp;token=5e610bf9-e5ca-41c2-987e-5d9e479e860c" alt="Open Position Selection" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">24. Select Primary Position</h3> <img width="100%" src="https://static.guidde.com/v0/qg%2FrBdMQcTfmFQqinMWwsPyWcEK7rJ2%2FgbyfgcBCEUNhKNsJCvAyqc%2FnwBpdM4aVApJiMBsvENwog_doc.png?alt=media&amp;token=b9386da4-8acd-4dda-a2bd-f6d82560f079" alt="Select Primary Position" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">25. Access Code Selection</h3> <div style="margin-top:16px; margin-bottom:16px" >
+            Click "Code" to select the appropriate medical code for the case.
+            
+        </div> <img width="100%" src="https://static.guidde.com/v0/qg%2FrBdMQcTfmFQqinMWwsPyWcEK7rJ2%2FgbyfgcBCEUNhKNsJCvAyqc%2FdAA64V5rTZnE9bA3cLFYcz_doc.png?alt=media&amp;token=2d4f55a0-40de-4d67-a0c0-07d06617ff38" alt="Access Code Selection" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">26. Choose Medical Diagnosis Code</h3> <img width="100%" src="https://static.guidde.com/v0/qg%2FrBdMQcTfmFQqinMWwsPyWcEK7rJ2%2FgbyfgcBCEUNhKNsJCvAyqc%2F3HnTPF8LzTSJDfQiHuA9wG_doc.png?alt=media&amp;token=23d79674-1d83-4414-bb3e-a935d4b0d6c6" alt="Choose Medical Diagnosis Code" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">27. Open Code Entry Field</h3> <img width="100%" src="https://static.guidde.com/v0/qg%2FrBdMQcTfmFQqinMWwsPyWcEK7rJ2%2FgbyfgcBCEUNhKNsJCvAyqc%2Fqs7v5AKQiiig957fYt6Rmf_doc.png?alt=media&amp;token=97ae0fbf-c2b5-44d2-9fa0-1b302315bf01" alt="Open Code Entry Field" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">28. Enter Medical Code</h3> <div style="margin-top:16px; margin-bottom:16px" >
+            Enter the medical code number in the field provided.
+            
+        </div> <img width="100%" src="https://static.guidde.com/v0/qg%2FrBdMQcTfmFQqinMWwsPyWcEK7rJ2%2FgbyfgcBCEUNhKNsJCvAyqc%2F7C9zgXJYqXyFjmVUvun9KD_doc.png?alt=media&amp;token=a986a092-8d7a-4cd7-8775-e1db2c21ca9c" alt="Enter Medical Code" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">29. Access Procedure Description</h3> <div style="margin-top:16px; margin-bottom:16px" >
+            Click "surgical procedure description
+            
+        </div> <img width="100%" src="https://static.guidde.com/v0/qg%2FrBdMQcTfmFQqinMWwsPyWcEK7rJ2%2FgbyfgcBCEUNhKNsJCvAyqc%2Fr49xYmfHpLyLDc3vL2VVGh_doc.png?alt=media&amp;token=441d1a00-7ff6-4c14-af60-0966099d7f85" alt="Access Procedure Description" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">30. Enter Procedure Description</h3> <div style="margin-top:16px; margin-bottom:16px" >
+            Enter a brief description of the surgical procedure, including site and side if applicable.
+            
+        </div> <img width="100%" src="https://static.guidde.com/v0/qg%2FrBdMQcTfmFQqinMWwsPyWcEK7rJ2%2FgbyfgcBCEUNhKNsJCvAyqc%2Fv68SK8tpX2zwtJsbwdkZ6u_doc.png?alt=media&amp;token=7eebb37b-727b-4f7d-8039-f4f177bb46fa" alt="Enter Procedure Description" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">31. Save Procedure Details</h3> <div style="margin-top:16px; margin-bottom:16px" >
+            Click "Save and Continue" to save the procedure description and proceed.
+            
+        </div> <img width="100%" src="https://static.guidde.com/v0/qg%2FrBdMQcTfmFQqinMWwsPyWcEK7rJ2%2FgbyfgcBCEUNhKNsJCvAyqc%2FtjJMAWJStkASwMPsXRWsWL_doc.png?alt=media&amp;token=36648723-b50a-4fdd-a7dc-2726229447d9" alt="Save Procedure Details" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">32. Access Search Function</h3> <div style="margin-top:16px; margin-bottom:16px" >
+            complete all required fields in the medical insurance information section.
+            
+        </div> <img width="100%" src="https://static.guidde.com/v0/qg%2FrBdMQcTfmFQqinMWwsPyWcEK7rJ2%2FgbyfgcBCEUNhKNsJCvAyqc%2F15wYpDrRDpMLmb4h7NfyF6_doc.png?alt=media&amp;token=a8ced150-6fc8-4ecb-a34b-fe5833f7ec19" alt="Access Search Function" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">33. Initiate Search</h3> <img width="100%" src="https://static.guidde.com/v0/qg%2FrBdMQcTfmFQqinMWwsPyWcEK7rJ2%2FgbyfgcBCEUNhKNsJCvAyqc%2Fgk5smwFd5xs5q4ga65bDsX_doc.png?alt=media&amp;token=3243f170-b6b6-4f0b-a0bf-e7761bde0095" alt="Initiate Search" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">34. Enter Search Term</h3> <img width="100%" src="https://static.guidde.com/v0/qg%2FrBdMQcTfmFQqinMWwsPyWcEK7rJ2%2FgbyfgcBCEUNhKNsJCvAyqc%2FhWsNGeBHJrdojWEKwd6cRa_doc.png?alt=media&amp;token=3b48b954-2601-4bd9-b5b9-e462b0a04dac" alt="Enter Search Term" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">35. Select Medical Scheme</h3> <img width="100%" src="https://static.guidde.com/v0/qg%2FrBdMQcTfmFQqinMWwsPyWcEK7rJ2%2FgbyfgcBCEUNhKNsJCvAyqc%2FwLyVHMgws1wtgyFRfS9UAx_doc.png?alt=media&amp;token=930867f1-7948-4e47-af11-e3de35f45b0d" alt="Select Medical Scheme" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">36. Access Estimate Amount Field</h3> <div style="margin-top:16px; margin-bottom:16px" >
+            For Private Patients Click "Enter estimate amount" to input the estimated cost for the procedure.
+            
+        </div> <img width="100%" src="https://static.guidde.com/v0/qg%2FrBdMQcTfmFQqinMWwsPyWcEK7rJ2%2FgbyfgcBCEUNhKNsJCvAyqc%2FdXy5CMM4Bi768Db5KViuKp_doc.png?alt=media&amp;token=37c65048-1389-4fec-b9e9-f44d60bf70ff" alt="Access Estimate Amount Field" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">37. Enter Estimate Amount</h3> <div style="margin-top:16px; margin-bottom:16px" >
+            Enter the estimated amount for the procedure in the field provided.
+            
+        </div> <img width="100%" src="https://static.guidde.com/v0/qg%2FrBdMQcTfmFQqinMWwsPyWcEK7rJ2%2FgbyfgcBCEUNhKNsJCvAyqc%2Fu9BfD9phMwV72FJSWApXyR_doc.png?alt=media&amp;token=80e958ac-22eb-48e8-933d-440cd3af9ddd" alt="Enter Estimate Amount" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">38. Save Estimate and Continue</h3> <div style="margin-top:16px; margin-bottom:16px" >
+            Click "Save and Continue" to save the estimate and proceed to the next step.
+            
+        </div> <img width="100%" src="https://static.guidde.com/v0/qg%2FrBdMQcTfmFQqinMWwsPyWcEK7rJ2%2FgbyfgcBCEUNhKNsJCvAyqc%2FtTTUJvmaUuLJEBD3Cqb622_doc.png?alt=media&amp;token=68d1de36-b7de-444f-911d-353b4f6f93f2" alt="Save Estimate and Continue" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">39. Access Booking Options</h3> <div style="margin-top:16px; margin-bottom:16px" >
+            Click here to open booking options for the patient episode.
+            
+        </div> <img width="100%" src="https://static.guidde.com/v0/qg%2FrBdMQcTfmFQqinMWwsPyWcEK7rJ2%2FgbyfgcBCEUNhKNsJCvAyqc%2FkgCJvQyj1wBEQQLc2Jo1on_doc.png?alt=media&amp;token=41a034ce-4e35-46db-8e84-14e6ea857456" alt="Access Booking Options" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">40. Select Manual Approved Booking</h3> <div style="margin-top:16px; margin-bottom:16px" >
+            Select the allocated slot for the doctor, or click "Manual Approved Booking" to opt for manual approval of the booking.
+            
+        </div> <img width="100%" src="https://static.guidde.com/v0/qg%2FrBdMQcTfmFQqinMWwsPyWcEK7rJ2%2FgbyfgcBCEUNhKNsJCvAyqc%2F7KFQ1w92gG21F13kdDh1cf_doc.png?alt=media&amp;token=805e38dd-fbba-45e2-807d-d1f824d7dfef" alt="Select Manual Approved Booking" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">41. Open Date Selection</h3> <div style="margin-top:16px; margin-bottom:16px" >
+            Click here to access the date selection calendar.
+            
+        </div> <img width="100%" src="https://static.guidde.com/v0/qg%2FrBdMQcTfmFQqinMWwsPyWcEK7rJ2%2FgbyfgcBCEUNhKNsJCvAyqc%2F2DZW18VRgcYvJzUTCGcmiV_doc.png?alt=media&amp;token=def1b2b7-4546-48d8-ab65-d1214333c0fa" alt="Open Date Selection" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">42. Choose Appointment Date</h3> <img width="100%" src="https://static.guidde.com/v0/qg%2FrBdMQcTfmFQqinMWwsPyWcEK7rJ2%2FgbyfgcBCEUNhKNsJCvAyqc%2Fu6PVocMxzFEVJkJSmKAp6s_doc.png?alt=media&amp;token=83126bf3-6752-4165-b388-b90ec904ee2a" alt="Choose Appointment Date" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">43. Confirm Date Selection</h3> <img width="100%" src="https://static.guidde.com/v0/qg%2FrBdMQcTfmFQqinMWwsPyWcEK7rJ2%2FgbyfgcBCEUNhKNsJCvAyqc%2FkKBtea7kWi5evCcVjnDjCE_doc.png?alt=media&amp;token=b6960220-1876-4a94-9eac-a511a5d0f0ff" alt="Confirm Date Selection" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">44. Access Estimated Minutes Field</h3> <div style="margin-top:16px; margin-bottom:16px" >
+            Click "Enter Estimated Minutes" to specify the expected duration of the procedure.
+            
+        </div> <img width="100%" src="https://static.guidde.com/v0/qg%2FrBdMQcTfmFQqinMWwsPyWcEK7rJ2%2FgbyfgcBCEUNhKNsJCvAyqc%2F3TU9i4tyvevN699dkPMgHN_doc.png?alt=media&amp;token=c62020a2-d80e-4621-9255-6e8906cb3401" alt="Access Estimated Minutes Field" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">45. Enter Procedure Duration</h3> <img width="100%" src="https://static.guidde.com/v0/qg%2FrBdMQcTfmFQqinMWwsPyWcEK7rJ2%2FgbyfgcBCEUNhKNsJCvAyqc%2F5rnZgCCenEh6jsNG7TbkWp_doc.png?alt=media&amp;token=0b3cb809-361e-474d-b9fe-08772cc1edeb" alt="Enter Procedure Duration" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">46. Access Time Entry Field</h3> <div style="margin-top:16px; margin-bottom:16px" >
+            input the scheduled start time for the procedure.
+            
+        </div> <img width="100%" src="https://static.guidde.com/v0/qg%2FrBdMQcTfmFQqinMWwsPyWcEK7rJ2%2FgbyfgcBCEUNhKNsJCvAyqc%2F4cYCHidfaKnREgHjy3G42c_doc.png?alt=media&amp;token=9353cd91-a776-4258-9e2a-42a5a34f15c4" alt="Access Time Entry Field" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">47. Enter Scheduled Time</h3> <img width="100%" src="https://static.guidde.com/v0/qg%2FrBdMQcTfmFQqinMWwsPyWcEK7rJ2%2FgbyfgcBCEUNhKNsJCvAyqc%2F5igeMWDsWA49dTnQRssj7s_doc.png?alt=media&amp;token=94b52ce9-593d-41e8-bfae-255e9f446f88" alt="Enter Scheduled Time" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">48. Proceed After Time Entry</h3> <div style="margin-top:16px; margin-bottom:16px" >
+            Click "Continue" to move forward after entering the scheduled time.
+            
+        </div> <img width="100%" src="https://static.guidde.com/v0/qg%2FrBdMQcTfmFQqinMWwsPyWcEK7rJ2%2FgbyfgcBCEUNhKNsJCvAyqc%2F29KmFfoCcj7qcNwJmC3MvS_doc.png?alt=media&amp;token=bca6d79e-0aae-4d0d-9112-0d030a1498fd" alt="Proceed After Time Entry" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">49. Advance to Next Step</h3> <div style="margin-top:16px; margin-bottom:16px" >
+            upload the surgery consent document if you have it; otherwise, proceed without it.
+            
+        </div> <img width="100%" src="https://static.guidde.com/v0/qg%2FrBdMQcTfmFQqinMWwsPyWcEK7rJ2%2FgbyfgcBCEUNhKNsJCvAyqc%2F32eR2r2bDLchxpiHVCAxTg_doc.png?alt=media&amp;token=bb3356c7-3d63-4e30-8883-d1193b505847" alt="Advance to Next Step" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">50. Save Patient Case</h3> <div style="margin-top:16px; margin-bottom:16px" >
+            Click "Save Case" to finalize and save all entered patient episode details.
+            
+        </div> <img width="100%" src="https://static.guidde.com/v0/qg%2FrBdMQcTfmFQqinMWwsPyWcEK7rJ2%2FgbyfgcBCEUNhKNsJCvAyqc%2Fcvu2e4jD26yFoSPQYaEr77_doc.png?alt=media&amp;token=558f0355-9c1e-4abf-8582-92296db083e8" alt="Save Patient Case" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">51. Confirm Save Action</h3> <img width="100%" src="https://static.guidde.com/v0/qg%2FrBdMQcTfmFQqinMWwsPyWcEK7rJ2%2FgbyfgcBCEUNhKNsJCvAyqc%2F2k4xUDmqwFWXY9KCM7f3MT_doc.png?alt=media&amp;token=7fc066ad-6799-43d5-a837-57d7662efb3b" alt="Confirm Save Action" /> <div style="margin-top:16px; margin-bottom:16px" >
+            You have successfully scheduled a new patient episode in Medworkflow by entering patient details, selecting medical options, and finalizing the case. You can now proceed to manage or review scheduled episodes as needed.
+            
+        </div>
+          <div class="guide-provider" style="margin-right:2px"><a href="https://www.guidde.com" rel="noreferrer" target="_blank" style="text-decoration:none;color:#000000">Interactive walkthrough powered by <strong style="color:#CB0000">guidde</strong></a></div>
+        </main>
+        <footer class="guide-footer"><span><strong>Medworkflow</strong> · Operational Training</span><span>Patient Episode Scheduling Guide · Version 1.0</span></footer>
+      </div>
+      <script>
+        function exportGuideToPdf() {
+          window.print();
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+          const content = document.querySelector('.guide-content');
+          const headings = Array.from(content.querySelectorAll('h3')).filter(function (heading) {
+            return /^\s*\d+\./.test(heading.textContent);
+          });
+
+          const steps = document.createElement('section');
+          steps.className = 'steps';
+          steps.setAttribute('aria-label', 'Patient episode scheduling steps');
+          headings[0].parentNode.insertBefore(steps, headings[0]);
+
+          headings.forEach(function (heading) {
+            const card = document.createElement('article');
+            card.className = 'step-card';
+            const stepNumber = heading.textContent.match(/^\s*(\d+)\./)[1];
+            heading.textContent = heading.textContent.replace(/^\s*\d+\.\s*/, '');
+            heading.id = 'step-' + stepNumber;
+            card.setAttribute('aria-labelledby', heading.id);
+
+            let node = heading;
+            while (node) {
+              const next = node.nextSibling;
+              card.appendChild(node);
+              if (node.nodeType === 1 && node.tagName === 'IMG') break;
+              node = next;
+            }
+            steps.appendChild(card);
+          });
+
+          const completion = steps.nextElementSibling;
+          if (completion && completion.tagName === 'DIV' && !completion.classList.contains('guide-provider')) {
+            completion.classList.add('guide-complete');
+          }
+        });
+      </script>
+  
+</body>
+</html>
