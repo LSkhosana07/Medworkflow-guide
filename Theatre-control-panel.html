@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0b3158">
+    <meta name="description" content="Medworkflow theatre control panel training guide.">
+    <title>Medworkflow | Theatre Control Panel Guide</title>
+    <style>
+      :root{--navy:#0b3158;--navy-dark:#071d33;--blue:#1976a3;--teal:#20a39e;--ink:#172536;--muted:#526477;--line:#dce5ec;--canvas:#f3f7fa}
+      *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);background:radial-gradient(circle at 90% 2%,rgba(32,163,158,.11),transparent 24rem),var(--canvas);font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
+      .site-layout{display:grid;grid-template-columns:250px minmax(0,1120px);gap:24px;width:min(1410px,calc(100% - 40px));margin:24px auto 72px;align-items:start}.guide-shell{width:100%;margin:0;overflow:hidden;background:#fff;border:1px solid rgba(11,49,88,.08);border-radius:24px;box-shadow:0 18px 48px rgba(7,29,51,.1)}
+      .guide-sidebar{position:sticky;top:24px;min-height:calc(100vh - 48px);padding:26px 18px;border-radius:20px;color:#d8e6f0;background:linear-gradient(165deg,var(--navy-dark),var(--navy));box-shadow:0 16px 38px rgba(7,29,51,.18)}.sidebar-brand{display:flex;align-items:center;gap:11px;padding:0 8px 24px;border-bottom:1px solid rgba(255,255,255,.12);font-size:17px;font-weight:750;color:#fff}.sidebar-mark{display:grid;place-items:center;width:36px;height:36px;border:1px solid rgba(255,255,255,.28);border-radius:10px;background:rgba(255,255,255,.09);font-size:12px;font-weight:800}.sidebar-label{margin:24px 10px 10px;color:#82d8d1;font-size:11px;font-weight:800;letter-spacing:.13em;text-transform:uppercase}.sidebar-nav{display:grid;gap:6px}.sidebar-link{display:flex;align-items:center;gap:11px;padding:11px 12px;border:1px solid transparent;border-radius:10px;color:#cbd9e5;font-size:14px;font-weight:650;text-decoration:none;transition:.18s}.sidebar-link:hover{color:#fff;background:rgba(255,255,255,.08)}.sidebar-link[aria-current="page"]{border-color:rgba(141,224,216,.24);color:#fff;background:rgba(32,163,158,.2)}.sidebar-icon{width:8px;height:8px;border:2px solid currentColor;border-radius:50%}.sidebar-link[aria-current="page"] .sidebar-icon{border-color:#8de0d8;background:#8de0d8}.sidebar-note{margin:24px 8px 0;padding:14px;border:1px dashed rgba(255,255,255,.18);border-radius:11px;color:#9fb1c1;font-size:12px;line-height:1.5}
+      .guide-hero{position:relative;overflow:hidden;padding:64px 72px 56px;color:#fff;background:linear-gradient(125deg,var(--navy-dark),var(--navy) 62%,#0e5b77)}.guide-hero:after{content:"";position:absolute;width:300px;height:300px;right:-80px;top:-130px;border:52px solid rgba(255,255,255,.06);border-radius:50%}
+      .brand-lockup{display:flex;align-items:center;gap:13px;margin-bottom:44px}.brand-mark{display:grid;place-items:center;width:42px;height:42px;border:1px solid rgba(255,255,255,.32);border-radius:11px;background:rgba(255,255,255,.1);font-weight:800}.brand-name{font-size:18px;font-weight:720}.eyebrow{margin:0 0 14px;color:#8de0d8;font-size:12px;font-weight:750;letter-spacing:.16em;text-transform:uppercase}
+      .guide-hero h1{max-width:720px;margin:0;color:#fff;font-size:clamp(36px,5vw,58px);line-height:1.08;letter-spacing:-.04em}.hero-summary{max-width:690px;margin:22px 0 0;color:#d8e6f0;font-size:18px}.hero-meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:34px}.hero-meta span{padding:8px 13px;border:1px solid rgba(255,255,255,.2);border-radius:999px;color:#eef7fb;background:rgba(255,255,255,.08);font-size:13px;font-weight:600}
+      .guide-toolbar{position:absolute;z-index:2;top:64px;right:72px;display:flex;align-items:center;gap:10px}.toolbar-button{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:42px;padding:0 18px;border:1px solid rgba(255,255,255,.5);border-radius:10px;color:var(--navy-dark);background:#fff;box-shadow:0 8px 22px rgba(0,0,0,.2);font:inherit;font-size:14px;font-weight:700;text-decoration:none;cursor:pointer;transition:.18s}.toolbar-button:hover{transform:translateY(-1px);color:#fff;background:var(--teal)}.toolbar-button:focus-visible{outline:3px solid rgba(32,163,158,.35);outline-offset:3px}.toolbar-button svg{width:17px;height:17px;fill:currentColor}
+      .guide-content{padding:56px 72px 68px}.video-label{margin:0 0 12px;color:var(--navy);font-size:13px;font-weight:750;letter-spacing:.1em;text-transform:uppercase}.video-frame{position:relative;padding-bottom:56.25%;overflow:hidden;border:1px solid #cddae4;border-radius:16px;background:var(--navy-dark);box-shadow:0 12px 30px rgba(7,29,51,.14)}.video-frame iframe{border-radius:16px!important}
+      .guide-intro{margin:28px 0 12px!important;padding:20px 22px;border-left:4px solid var(--teal);border-radius:0 12px 12px 0;color:#33485d;background:#f3faf9;font-size:17px}.launch-link{margin:26px 0 56px!important;padding:16px 18px;border:1px solid var(--line);border-radius:12px;background:#f8fafc;font-size:15px!important}.launch-link a{color:var(--blue);font-weight:700;text-underline-offset:3px}
+      .steps{counter-reset:guide-step}.step-card{counter-increment:guide-step;margin:0 0 54px;padding:26px;border:1px solid var(--line);border-radius:18px;background:#fff;box-shadow:0 8px 24px rgba(11,49,88,.055);break-inside:avoid}.step-card h3{display:flex;align-items:center;gap:14px;margin:0 0 14px!important;color:var(--navy);font-size:20px!important;line-height:1.35}.step-card h3:before{content:counter(guide-step,decimal-leading-zero);flex:0 0 auto;display:grid;place-items:center;width:40px;height:40px;border-radius:11px;color:#fff;background:linear-gradient(145deg,#12446f,var(--blue));font-size:12px;font-weight:800;letter-spacing:.04em}.step-card>div{margin:0 0 20px!important;color:var(--muted)}.step-card img{display:block;width:100%;height:auto;border:1px solid #cfdbe4;border-radius:12px;background:#edf2f6;box-shadow:0 10px 26px rgba(7,29,51,.1)}
+      .guide-complete{margin-top:10px;padding:26px;border-radius:16px;color:#174c49;background:#dff5f2;font-weight:560}.guide-provider{margin-top:22px;color:#647587;font-size:13px}.guide-footer{display:flex;justify-content:space-between;gap:24px;padding:24px 72px;border-top:1px solid var(--line);color:#647587;background:#f8fafc;font-size:13px}.guide-footer strong{color:var(--navy)}
+      @media(max-width:1050px){.site-layout{grid-template-columns:220px minmax(0,1fr)}.guide-toolbar{position:relative;top:auto;right:auto;margin-top:28px}}
+      @media(max-width:860px){.site-layout{display:block}.guide-sidebar{position:relative;top:auto;min-height:0;margin-bottom:18px;padding:16px}.sidebar-brand{padding-bottom:14px}.sidebar-label{margin:15px 6px 8px}.sidebar-nav{display:flex;flex-wrap:wrap}.sidebar-link{flex:1 1 210px}.sidebar-note{display:none}.guide-hero{padding-top:44px}}
+      @media(max-width:720px){.site-layout{width:100%;margin:0}.guide-sidebar{margin:0;border-radius:0}.guide-shell{width:100%;margin:0;border:0;border-radius:0}.guide-hero,.guide-content{padding:40px 22px}.guide-hero h1{font-size:37px}.brand-lockup{margin-bottom:34px}.guide-toolbar{flex-direction:column}.toolbar-button{width:100%}.step-card{margin-bottom:30px;padding:18px;border-radius:14px}.step-card h3{align-items:flex-start;font-size:18px!important}.guide-footer{flex-direction:column;padding:22px}}
+      @media print{@page{size:A4;margin:14mm}body{background:#fff;font-size:10pt}.site-layout{display:block;width:100%;margin:0}.guide-sidebar{display:none!important}.guide-shell{width:100%;margin:0;border:0;border-radius:0;box-shadow:none}.guide-hero{padding:22mm 14mm;print-color-adjust:exact;-webkit-print-color-adjust:exact}.guide-content{padding:12mm 0}.guide-toolbar,.video-frame{display:none!important}.video-label:after{content:" — available in the digital version";font-weight:500;text-transform:none;letter-spacing:0}.step-card{margin-bottom:9mm;padding:5mm;box-shadow:none}.step-card h3:before{print-color-adjust:exact;-webkit-print-color-adjust:exact}.guide-footer{padding:6mm 0}}
+    </style>
+</head>
+<body>
+    <div class="site-layout">
+      <aside class="guide-sidebar" aria-label="Medworkflow training guides">
+        <div class="sidebar-brand"><span class="sidebar-mark">MW</span><span>Medworkflow Guides</span></div>
+        <p class="sidebar-label">Training library</p>
+        <nav class="sidebar-nav">
+          <a class="sidebar-link" href="index.html"><span class="sidebar-icon"></span>Patient Episodes</a>
+          <a class="sidebar-link" href="admissions.html"><span class="sidebar-icon"></span>Inpatient Admissions</a>
+          <a class="sidebar-link" href="Theatre.html"><span class="sidebar-icon"></span>Theatre Scheduling</a>
+          <a class="sidebar-link" href="Theatre-control-panel.html" aria-current="page"><span class="sidebar-icon"></span>Theatre Control Panel</a>
+        </nav>
+        <div class="sidebar-note">Additional Medworkflow guides will appear here as they are added.</div>
+      </aside>
+      <div class="guide-shell">
+        <header class="guide-hero">
+          <div class="brand-lockup"><span class="brand-mark">MW</span><span class="brand-name">Medworkflow</span></div>
+          <p class="eyebrow">Theatre Operations Training Guide</p>
+          <h1>Add Theater Case to Control Panel</h1>
+          <p class="hero-summary">Learn how to add a theater case to the theater control panel so cases are properly loaded and admitted.</p>
+          <div class="hero-meta"><span>5 guided steps</span><span>Theatre control panel</span><span>Digital walkthrough included</span></div>
+          <nav class="guide-toolbar" aria-label="Document actions">
+            <button class="toolbar-button" type="button" onclick="exportGuideToPdf()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16.5 6.5 11l1.4-1.4 3.1 3.1V3h2v9.7l3.1-3.1 1.4 1.4-5.5 5.5ZM5 21a2 2 0 0 1-2-2v-4h2v4h14v-4h2v4a2 2 0 0 1-2 2H5Z"/></svg>Export to PDF</button>
+          </nav>
+        </header>
+        <main class="guide-content">
+          <p class="video-label">Interactive walkthrough</p>
+
+     <div class="video-frame">
+     <video style="width:100%;height:100%;position:absolute;left:0;top:0;border-radius:10px;background:#000" controls preload="metadata" playsinline title="Add Theater Case to Control Panel in Medworkflow"><source src="media/theatre-control-panel_sHrEfJYhYm1WQunT5CK87H.mp4" type="video/mp4" />Your browser does not support the video tag.</video>
+     </div>
+
+          <div class="guide-intro" style="margin-top:16px; margin-bottom:16px" >
+            This tutorial explains how to add a theater case to the theater control panel. You will learn the necessary steps to ensure cases are properly loaded and admitted.
+
+        </div> <h3 class="launch-link" style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">
+                      Go to <a href="https://sandbox.medworkflow.co.za" target="_blank">sandbox.medworkflow.co.za</a>
+                  </h3> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">1. Overview of Adding Theater Case</h3> <div style="margin-top:16px; margin-bottom:16px" >
+            This tutorial is to show you how to add a theater case to the theater control panel.
+
+        </div> <img width="100%" src="media/uNy5gfy2yFYtxr1uZY2ccm_doc_4b5a87126b.png" alt="Overview of Adding Theater Case" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">2. Identify Unloaded Cases</h3> <div style="margin-top:16px; margin-bottom:16px" >
+            If the case has not been loaded into the software yet, if the tile with the patient information is not displayed under theater cases, that means the case has not been added, and you will need
+
+        </div> <img width="100%" src="media/ijqKzrCh594qpbhFtDhi6s_doc_2ab165f8af.png" alt="Identify Unloaded Cases" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">3. Add Emergency Case</h3> <div style="margin-top:16px; margin-bottom:16px" >
+            To add it yourself, simply click Emergency Case at the top. Then type in the TriMed episode number of the patient.
+
+        </div> <img width="100%" src="media/pMmevGoQQ1JWdPJiPo6iAe_doc_1f0fbd1f12.png" alt="Add Emergency Case" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">4. Enter Patient ID and Select Theatre</h3> <div style="margin-top:16px; margin-bottom:16px" >
+            Then add the ID or passport number of the patient. Finally select the operating theatre where the procedure will be taking place.
+
+        </div> <img width="100%" src="media/tJcyxrhnPbvH9Rz5AWTFHB_doc_6d17651aff.png" alt="Enter Patient ID and Select Theatre" /> <h3 style="font-size: 1.17em; font-weight: bold; margin: 1em 0; width: 100%; word-break: break-word; max-width:100%;">5. Create and Admit Case</h3> <div style="margin-top:16px; margin-bottom:16px" >
+            Once you say create, it will already admit.
+
+        </div> <img width="100%" src="media/5MG4WTRN9iJCsYapysNy9J_doc_b2b812ef03.png" alt="Create and Admit Case" /> <div style="margin-top:16px; margin-bottom:16px" >
+            This tutorial guided you through adding a theater case to the control panel, including identifying unloaded cases, entering patient details, and finalizing admission.
+
+        </div>
+          <div class="guide-provider" style="margin-right:2px"><a href="https://www.guidde.com" rel="noreferrer" target="_blank" style="text-decoration:none;color:#000000">Interactive walkthrough powered by <strong style="color:#CB0000">guidde</strong></a></div>
+        </main>
+        <footer class="guide-footer"><span><strong>Medworkflow</strong> · Theatre Operations Training</span><span>Theatre Control Panel Guide · Version 1.0</span></footer>
+      </div>
+    </div>
+      <script>
+        function exportGuideToPdf(){window.print()}
+        document.addEventListener('DOMContentLoaded',function(){
+          const content=document.querySelector('.guide-content');
+          const headings=Array.from(content.querySelectorAll('h3')).filter(function(h){return /^\s*\d+\./.test(h.textContent)});
+          if(!headings.length)return;
+          const steps=document.createElement('section');steps.className='steps';steps.setAttribute('aria-label','Theatre control panel steps');headings[0].parentNode.insertBefore(steps,headings[0]);
+          headings.forEach(function(heading){
+            const card=document.createElement('article');card.className='step-card';
+            const number=heading.textContent.match(/^\s*(\d+)\./)[1];heading.textContent=heading.textContent.replace(/^\s*\d+\.\s*/,'');heading.id='step-'+number;card.setAttribute('aria-labelledby',heading.id);
+            let node=heading;while(node){const next=node.nextSibling;card.appendChild(node);if(node.nodeType===1&&node.tagName==='IMG')break;node=next}steps.appendChild(card);
+          });
+          const completion=steps.nextElementSibling;if(completion&&completion.tagName==='DIV'&&!completion.classList.contains('guide-provider'))completion.classList.add('guide-complete');
+        });
+      </script>
+</body>
+</html>
